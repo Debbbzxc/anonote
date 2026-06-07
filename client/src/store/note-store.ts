@@ -52,7 +52,7 @@ export const useNoteStore = create<NoteState>((set) => ({
       const decrypted = await Promise.all(
         dtos.map(async (dto) => {
           const title = await decrypt(dto.encryptedTitle, password, dto.salt, dto.iv);
-          const content = await decrypt(dto.encryptedContent, password, dto.salt, dto.iv);
+          const content = await decrypt(dto.encryptedContent, password, dto.salt, dto.ivContent || dto.iv);
           return {
             id: dto._id,
             title,
@@ -76,15 +76,16 @@ export const useNoteStore = create<NoteState>((set) => ({
     set({ loading: true, error: null });
     try {
       const { ciphertext: encryptedTitle, iv } = await encrypt(title, password, noteSalt);
-      const { ciphertext: encryptedContent } = await encrypt(content, password, noteSalt);
+      const { ciphertext: encryptedContent, iv: ivContent } = await encrypt(content, password, noteSalt);
       const dto = await api.notes.create({
         encryptedTitle,
         encryptedContent,
         iv,
+        ivContent,
         salt: noteSalt,
       });
       const decryptedTitle = await decrypt(dto.encryptedTitle, password, dto.salt, dto.iv);
-      const decryptedContent = await decrypt(dto.encryptedContent, password, dto.salt, dto.iv);
+      const decryptedContent = await decrypt(dto.encryptedContent, password, dto.salt, dto.ivContent);
       const note: DecryptedNote = {
         id: dto._id,
         title: decryptedTitle,
@@ -106,11 +107,12 @@ export const useNoteStore = create<NoteState>((set) => ({
     set({ loading: true, error: null });
     try {
       const { ciphertext: encryptedTitle, iv } = await encrypt(title, password, noteSalt);
-      const { ciphertext: encryptedContent } = await encrypt(content, password, noteSalt);
+      const { ciphertext: encryptedContent, iv: ivContent } = await encrypt(content, password, noteSalt);
       const dto = await api.notes.update(id, {
         encryptedTitle,
         encryptedContent,
         iv,
+        ivContent,
         salt: noteSalt,
       });
       set((s) => ({

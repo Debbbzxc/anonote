@@ -13,8 +13,8 @@ export async function getNotes(req: Request, res: Response) {
 }
 
 export async function createNote(req: Request, res: Response) {
-  const { encryptedTitle, encryptedContent, iv, salt } = req.body;
-  if (!encryptedTitle || !encryptedContent || !iv || !salt) {
+  const { encryptedTitle, encryptedContent, iv, ivContent, salt } = req.body;
+  if (!encryptedTitle || !encryptedContent || !iv || !ivContent || !salt) {
     res.status(400).json({ error: "Missing required encrypted fields" });
     return;
   }
@@ -25,6 +25,7 @@ export async function createNote(req: Request, res: Response) {
       encryptedTitle,
       encryptedContent,
       iv,
+      ivContent,
       salt,
     });
 
@@ -37,7 +38,7 @@ export async function createNote(req: Request, res: Response) {
 
 export async function updateNote(req: Request, res: Response) {
   const id = req.params.id as string;
-  const { encryptedTitle, encryptedContent, iv, salt } = req.body;
+  const { encryptedTitle, encryptedContent, iv, ivContent, salt } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(400).json({ error: "Invalid note ID" });
@@ -47,7 +48,7 @@ export async function updateNote(req: Request, res: Response) {
   try {
     const note = await Note.findOneAndUpdate(
       { _id: id, userId: req.user!.userId },
-      { encryptedTitle, encryptedContent, iv, salt },
+      { encryptedTitle, encryptedContent, iv, ivContent, salt },
       { new: true }
     );
 

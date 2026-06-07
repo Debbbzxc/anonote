@@ -46,6 +46,7 @@ export interface NoteDTO {
   encryptedTitle: string;
   encryptedContent: string;
   iv: string;
+  ivContent: string;
   salt: string;
   createdAt: string;
   updatedAt: string;
@@ -55,5 +56,6 @@ export interface EncryptedNoteData {
   encryptedTitle: string;
   encryptedContent: string;
   iv: string;
+  ivContent: string;
   salt: string;
 }

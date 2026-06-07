@@ -25,7 +25,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   loading: false,
   error: null,
   isAuthenticated: !!localStorage.getItem("anonote-token"),
-  password: null,
+  password: sessionStorage.getItem("anonote-password"),
 
   register: async (username, password) => {
     set({ loading: true, error: null });
@@ -35,6 +35,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.setItem("anonote-userId", res.userId);
       localStorage.setItem("anonote-username", res.username);
       localStorage.setItem("anonote-salt", res.salt);
+      sessionStorage.setItem("anonote-password", password);
       set({
         token: res.token,
         userId: res.userId,
@@ -57,6 +58,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.setItem("anonote-userId", res.userId);
       localStorage.setItem("anonote-username", res.username);
       localStorage.setItem("anonote-salt", res.salt);
+      sessionStorage.setItem("anonote-password", password);
       set({
         token: res.token,
         userId: res.userId,
@@ -81,6 +83,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     localStorage.removeItem("anonote-userId");
     localStorage.removeItem("anonote-username");
     localStorage.removeItem("anonote-salt");
+    sessionStorage.removeItem("anonote-password");
     set({
       token: null,
       userId: null,

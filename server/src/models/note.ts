@@ -5,6 +5,7 @@ export interface INote extends Document {
   encryptedTitle: string;
   encryptedContent: string;
   iv: string;
+  ivContent: string;
   salt: string;
   createdAt: Date;
   updatedAt: Date;
@@ -16,6 +17,7 @@ const noteSchema = new Schema<INote>(
     encryptedTitle: { type: String, required: true },
     encryptedContent: { type: String, required: true },
     iv: { type: String, required: true },
+    ivContent: { type: String, required: true },
     salt: { type: String, required: true },
   },
   { timestamps: true }
