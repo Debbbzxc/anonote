@@ -49,7 +49,7 @@ export const useNoteStore = create<NoteState>((set) => ({
     set({ loading: true, error: null });
     try {
       const dtos = await api.notes.list();
-      const decrypted = await Promise.all(
+      const results = await Promise.allSettled(
         dtos.map(async (dto) => {
           const title = await decrypt(dto.encryptedTitle, password, dto.salt, dto.iv);
           const content = await decrypt(dto.encryptedContent, password, dto.salt, dto.ivContent || dto.iv);
@@ -66,6 +66,9 @@ export const useNoteStore = create<NoteState>((set) => ({
           };
         })
       );
+      const decrypted = results
+        .filter((r) => r.status === "fulfilled")
+        .map((r) => (r as PromiseFulfilledResult<unknown>).value) as DecryptedNote[];
       set({ notes: decrypted, loading: false });
     } catch (err) {
       set({ loading: false, error: (err as Error).message });
