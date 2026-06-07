@@ -17,7 +17,7 @@ export default defineConfig({
       manifest: {
         name: "AnoNote - Encrypted Notes",
         short_name: "AnoNote",
-        description: "Notes that stay secret",
+        description: "Anonymous end-to-end encrypted notes",
         theme_color: "#09090b",
         background_color: "#09090b",
         display: "standalone",

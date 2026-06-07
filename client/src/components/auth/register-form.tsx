@@ -43,7 +43,7 @@ export function RegisterForm() {
         <img src="/logo.png" alt="AnoNote" className="w-14 h-14 dark:invert" />
         <div>
           <h1 className="text-2xl font-bold tracking-tight">AnoNote</h1>
-          <p className="text-xs text-muted-foreground mt-1">Notes that stay secret</p>
+          <p className="text-xs text-muted-foreground mt-1">Anonymous end-to-end encrypted notes</p>
         </div>
         <p className="text-xs text-muted-foreground/60 leading-relaxed max-w-xs mx-auto">
           Your password is your encryption key. If you lose it, your notes are unrecoverable.
