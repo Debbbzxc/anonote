@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: anonote-api
+    env: node
+    region: oregon
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
