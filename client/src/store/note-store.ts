@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { api, type NoteDTO } from "@/lib/api";
+import { api } from "@/lib/api";
 import { encrypt, decrypt } from "@/lib/crypto";
 
 export interface DecryptedNote {
@@ -75,7 +75,7 @@ export const useNoteStore = create<NoteState>((set) => ({
   createNote: async (title, content, password, noteSalt) => {
     set({ loading: true, error: null });
     try {
-      const { encryptedTitle, iv } = await encrypt(title, password, noteSalt);
+      const { ciphertext: encryptedTitle, iv } = await encrypt(title, password, noteSalt);
       const { ciphertext: encryptedContent } = await encrypt(content, password, noteSalt);
       const dto = await api.notes.create({
         encryptedTitle,
@@ -105,7 +105,7 @@ export const useNoteStore = create<NoteState>((set) => ({
   editNote: async (id, title, content, password, noteSalt) => {
     set({ loading: true, error: null });
     try {
-      const { encryptedTitle, iv } = await encrypt(title, password, noteSalt);
+      const { ciphertext: encryptedTitle, iv } = await encrypt(title, password, noteSalt);
       const { ciphertext: encryptedContent } = await encrypt(content, password, noteSalt);
       const dto = await api.notes.update(id, {
         encryptedTitle,
