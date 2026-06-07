@@ -103,6 +103,7 @@ export const useNoteStore = create<NoteState>((set) => ({
       set((s) => ({ notes: [note, ...s.notes], loading: false }));
     } catch (err) {
       set({ loading: false, error: (err as Error).message });
+      throw err;
     }
   },
 
@@ -137,6 +138,7 @@ export const useNoteStore = create<NoteState>((set) => ({
       }));
     } catch (err) {
       set({ loading: false, error: (err as Error).message });
+      throw err;
     }
   },
 
@@ -146,6 +148,7 @@ export const useNoteStore = create<NoteState>((set) => ({
       set((s) => ({ notes: s.notes.filter((n) => n.id !== id) }));
     } catch (err) {
       set({ error: (err as Error).message });
+      throw err;
     }
   },
 }));

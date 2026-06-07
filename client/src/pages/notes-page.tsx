@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuthStore } from "@/store/auth-store";
 import { useNoteStore, type DecryptedNote } from "@/store/note-store";
 import { generateSalt } from "@/lib/crypto";
+import { toast } from "@/hooks/use-toast";
 import { Plus, LogOut } from "lucide-react";
 
 export default function NotesPage() {
@@ -37,17 +38,25 @@ export default function NotesPage() {
 
   async function handleSave(title: string, content: string) {
     if (!password) return;
-    if (editingNote) {
-      await editNote(editingNote.id, title, content, password, editingNote.salt);
-    } else {
-      const noteSalt = await generateSalt();
-      await createNote(title, content, password, noteSalt);
+    try {
+      if (editingNote) {
+        await editNote(editingNote.id, title, content, password, editingNote.salt);
+      } else {
+        const noteSalt = await generateSalt();
+        await createNote(title, content, password, noteSalt);
+      }
+    } catch (err) {
+      toast({ title: "Failed to save note", description: (err as Error).message, variant: "destructive" });
     }
   }
 
   async function handleDelete() {
     if (!editingNote) return;
-    await deleteNote(editingNote.id);
+    try {
+      await deleteNote(editingNote.id);
+    } catch (err) {
+      toast({ title: "Failed to delete note", description: (err as Error).message, variant: "destructive" });
+    }
   }
 
   function handleLogout() {

@@ -47,6 +47,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
     } catch (err) {
       set({ loading: false, error: (err as Error).message });
+      throw err;
     }
   },
 
@@ -70,6 +71,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
     } catch (err) {
       set({ loading: false, error: (err as Error).message });
+      throw err;
     }
   },
 

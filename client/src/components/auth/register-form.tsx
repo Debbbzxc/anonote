@@ -32,8 +32,8 @@ export function RegisterForm() {
     try {
       await register(username, password);
       navigate("/notes");
-    } catch {
-      toast({ title: "Registration failed", variant: "destructive" });
+    } catch (err) {
+      toast({ title: "Registration failed", description: (err as Error).message, variant: "destructive" });
     }
   }
 

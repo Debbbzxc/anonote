@@ -23,8 +23,8 @@ export function LoginForm() {
     try {
       await login(username, password);
       navigate("/notes");
-    } catch {
-      toast({ title: "Login failed", variant: "destructive" });
+    } catch (err) {
+      toast({ title: "Login failed", description: (err as Error).message, variant: "destructive" });
     }
   }
 
