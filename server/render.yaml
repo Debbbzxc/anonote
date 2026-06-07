@@ -3,6 +3,7 @@ services:
     name: anonote-api
     env: node
     region: oregon
+    rootDir: server
     buildCommand: npm run build
     startCommand: npm start
     healthCheckPath: /api/health
